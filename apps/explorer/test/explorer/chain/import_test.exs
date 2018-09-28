@@ -438,6 +438,14 @@ defmodule Explorer.Chain.ImportTest do
       assert_received {:chain_event, :transactions, [%Hash{}]}
     end
 
+    test "publishes token_transfers data to subscribers on insert" do
+      Chain.subscribe_to_events(:token_transfers)
+
+      Import.all(@import_data)
+
+      assert_received {:chain_event, :token_transfers, [%TokenTransfer{}]}
+    end
+
     test "does not broadcast if broadcast option is false" do
       non_broadcast_data = Map.merge(@import_data, %{broadcast: false})
 

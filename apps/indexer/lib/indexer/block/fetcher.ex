@@ -27,7 +27,7 @@ defmodule Indexer.Block.Fetcher do
                 balances: Import.balances_options(),
                 blocks: Import.blocks_options(),
                 block_second_degree_relations: Import.block_second_degree_relations_options(),
-                broadcast: boolean,
+                broadcast: term(),
                 logs: Import.logs_options(),
                 receipts: Import.receipts_options(),
                 token_balances: Import.token_balances_options(),
@@ -89,7 +89,7 @@ defmodule Indexer.Block.Fetcher do
         } = state,
         _.._ = range
       )
-      when broadcast in ~w(true false)a and callback_module != nil do
+      when callback_module != nil do
     with {:blocks, {:ok, next, result}} <-
            {:blocks, EthereumJSONRPC.fetch_blocks_by_range(range, json_rpc_named_arguments)},
          %{
