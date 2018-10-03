@@ -82,14 +82,19 @@ IO.inspect "mama mia"
     #     updated_at: ~N[2018-10-02 23:03:38.515465]
     #   }
     # ]
+    Enum.each(token_transfers, &update_transfers_count/1)
 
     {:noreply, state}
   end
 
   @impl true
   def handle_info({:chain_event, :token_transfers, :realtime, token_transfers}, state) do
-
+    Enum.each(token_transfers, &update_transfers_count/1)
 
     {:noreply, state}
+  end
+
+  defp update_transfers_count(token_transfer) do
+    update(token_transfer.token_contract_address_hash, fetch(token_hash) + 1)
   end
 end
