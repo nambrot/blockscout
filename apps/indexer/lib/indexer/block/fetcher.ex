@@ -83,7 +83,7 @@ defmodule Indexer.Block.Fetcher do
              | {step :: atom(), failed_value :: term(), changes_so_far :: term()}}
   def fetch_and_import_range(
         %__MODULE__{
-          broadcast: broadcast,
+          broadcast: _broadcast,
           callback_module: callback_module,
           json_rpc_named_arguments: json_rpc_named_arguments
         } = state,

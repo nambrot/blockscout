@@ -172,7 +172,7 @@ defmodule Explorer.Chain.TokenTransferTest do
       results = TokenTransfer.count_token_transfers()
 
       assert length(results) == 1
-      assert List.first(results) == {token.contract_address_hash , 2}
+      assert List.first(results) == {token.contract_address_hash, 2}
     end
   end
- end
+end

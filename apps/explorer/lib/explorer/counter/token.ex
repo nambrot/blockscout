@@ -10,6 +10,10 @@ defmodule Explorer.Counter.Token do
 
   @table :token_counts
 
+  def table_name() do
+    @table
+  end
+
   @doc """
   Starts a process to continually monitor the token counters.
   """
@@ -21,7 +25,7 @@ defmodule Explorer.Counter.Token do
   ## Server
   @impl true
   def init(args) do
-    :ets.new(@table, [:set, :named_table, :protected])
+    :ets.new(table_name(), [:set, :named_table, :protected])
 
     consolidate(TokenTransfer.count_token_transfers())
 
@@ -30,34 +34,34 @@ defmodule Explorer.Counter.Token do
     {:ok, args}
   end
 
-  def consolidate(items) do
+  defp consolidate(items) do
     for item <- items do
       insert(item)
     end
   end
 
   def insert({token_hash, counter}) do
-    :ets.insert(@table, {to_string(token_hash), counter})
+    :ets.insert(table_name(), {to_string(token_hash), counter})
   end
 
   def fetch(token_hash) do
-    result = :ets.lookup(@table, to_string(token_hash))
+    result = :ets.lookup(table_name(), to_string(token_hash))
 
     elem(List.first(result), 1)
-  end
-
-  def update_couter(token_hash) do
-    default = {to_string(token_hash), 0}
-
-    :ets.update_counter(@table, to_string(token_hash), 1, default)
   end
 
   @impl true
   def handle_info({:chain_event, :token_transfers, _type, token_transfers}, state) do
     token_transfers
     |> Enum.map(& &1.token_contract_address_hash)
-    |> Enum.each(&update_couter/1)
+    |> Enum.each(&update_counter/1)
 
     {:noreply, state}
+  end
+
+  defp update_counter(token_hash) do
+    default = {to_string(token_hash), 0}
+
+    :ets.update_counter(table_name(), to_string(token_hash), 1, default)
   end
 end

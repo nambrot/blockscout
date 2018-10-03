@@ -49,7 +49,14 @@ defmodule Explorer.Chain do
   Event type where data is broadcasted whenever data is inserted from chain indexing.
   """
   @type chain_event ::
-          :addresses | :balances | :blocks | :exchange_rate | :internal_transactions | :logs | :transactions | :token_transfers
+          :addresses
+          | :balances
+          | :blocks
+          | :exchange_rate
+          | :internal_transactions
+          | :logs
+          | :transactions
+          | :token_transfers
 
   @type direction :: :from | :to
 

@@ -230,7 +230,6 @@ defmodule Explorer.Chain.Import do
     with {:ok, ecto_schema_module_to_changes_list_map} <-
            changes_list_arguments_list_to_ecto_schema_module_to_changes_list_map(changes_list_arguments_list),
          {:ok, data} <- insert_ecto_schema_module_to_changes_list_map(ecto_schema_module_to_changes_list_map, options) do
-
       broadcast_events(data, Map.get(options, :broadcast, false))
 
       {:ok, data}

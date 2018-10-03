@@ -174,7 +174,8 @@ defmodule Explorer.Chain.TokenTransfer do
     query =
       from(
         tt in TokenTransfer,
-        join: t in Token, on: tt.token_contract_address_hash == t.contract_address_hash,
+        join: t in Token,
+        on: tt.token_contract_address_hash == t.contract_address_hash,
         select: {tt.token_contract_address_hash, count(tt.id)},
         group_by: tt.token_contract_address_hash
       )
