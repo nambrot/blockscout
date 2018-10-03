@@ -59,6 +59,8 @@ defmodule BlockScoutWeb.Notifier do
     |> Enum.each(&broadcast_transaction/1)
   end
 
+  def handle_event(_), do: nil
+
   defp broadcast_balance(%Address{hash: address_hash} = address) do
     Endpoint.broadcast("addresses:#{address_hash}", "balance_update", %{
       address: address,

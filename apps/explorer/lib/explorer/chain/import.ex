@@ -237,9 +237,9 @@ defmodule Explorer.Chain.Import do
     end
   end
 
+  defp broadcast_events(_data, false), do: nil
+
   defp broadcast_events(data, broadcast_type) do
-IO.inspect "📣 type"
-IO.inspect broadcast_type
     for {event_type, event_data} <- data,
         event_type in ~w(addresses balances blocks internal_transactions logs token_transfers transactions)a do
       broadcast_event_data(event_type, broadcast_type, event_data)
